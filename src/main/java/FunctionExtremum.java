@@ -26,31 +26,31 @@ public class FunctionExtremum {
     public double generateMinLimitForOneVar() {
         ArrayList<Double> current = new ArrayList<>();
         for (double value : var1.getValuesOnSegment())
-            current.add(minExpression.setVariable(var1.getTitle(), value).evaluate());
+            current.add(minExpression.setVariable(String.valueOf(var1.getTitle()), value).evaluate());
         return Collections.min(current);
     }
 
     public double generateMaxLimitForOneVar() {
         ArrayList<Double> current = new ArrayList<>();
         for (double value : var1.getValuesOnSegment())
-            current.add(maxExpression.setVariable(var1.getTitle(), value).evaluate());
+            current.add(maxExpression.setVariable(String.valueOf(var1.getTitle()), value).evaluate());
         return Collections.max(current);
     }
 
     public double generateMinLimitForTwoVars() {
         ArrayList<Double> current = new ArrayList<>();
-        for (double value : var1.getValuesOnSegment()) {
-            for (double v : var2.getValuesOnSegment())
-                current.add(minExpression.setVariable(var1.getTitle(), value).setVariable(var2.getTitle(), v).evaluate());
+        for (TripleIntegral.Point value : TripleIntegral.pointArray) {
+            current.add(minExpression.setVariable(String.valueOf(var1.getTitle()), value.getVal(var1.getTitle()))
+                    .setVariable(String.valueOf(var2.getTitle()), value.getVal(var2.getTitle())).evaluate());
         }
         return Collections.min(current);
     }
 
     public double generateMaxLimitForTwoVars() {
         ArrayList<Double> current = new ArrayList<>();
-        for (double value : var1.getValuesOnSegment()) {
-            for (double v : var2.getValuesOnSegment())
-                current.add(maxExpression.setVariable(var1.getTitle(), value).setVariable(var2.getTitle(), v).evaluate());
+        for (TripleIntegral.Point value : TripleIntegral.pointArray) {
+            current.add(maxExpression.setVariable(String.valueOf(var1.getTitle()), value.getVal(var1.getTitle()))
+                    .setVariable(String.valueOf(var2.getTitle()), value.getVal(var2.getTitle())).evaluate());
         }
         return Collections.max(current);
     }

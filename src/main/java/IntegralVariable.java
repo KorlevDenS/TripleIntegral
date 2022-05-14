@@ -1,9 +1,9 @@
 public class IntegralVariable {
 
-    private final String title;
+    private final char title;
     protected double[] valuesOnSegment;
 
-    public IntegralVariable(String title, double minValue, double maxValue, double step) {
+    public IntegralVariable(char title, double minValue, double maxValue, double step) {
         this.title = title;
         this.valuesOnSegment = splitNumericSegment(minValue, maxValue, step);
     }
@@ -21,7 +21,7 @@ public class IntegralVariable {
         return partsArray;
     }
 
-    public String getTitle() {
+    public char getTitle() {
         return this.title;
     }
 

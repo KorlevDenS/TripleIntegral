@@ -14,6 +14,8 @@ public class IntegralBuilder {
     private Expression secondMinLimit;
     private Expression thirdMaxLimit;
     private Expression thirdMinLimit;
+    private final String[] stringLimits = new String[6];
+    private int Accuracy;
 
     public IntegralBuilder(){
         loadLimits();
@@ -40,10 +42,10 @@ public class IntegralBuilder {
     }
 
     protected Expression loadIntegrandExp() throws UnknownFunctionOrVariableException {
-        System.out.println("Введите подынтегральное выражение символами с клавиатуры.");
-        String exp = ScanValidation.nextNonEmptyLine();
+        //System.out.println("Введите подынтегральное выражение символами с клавиатуры.");
+        //String exp = ScanValidation.nextNonEmptyLine();
         try {
-            return new ExpressionBuilder(exp).variables("x", "y", "z").build();
+            return new ExpressionBuilder("1").variables("x", "y", "z").build();
         } catch (IllegalArgumentException ex) {
             System.out.println("Выражение введено некорректно, повторите попытку.");
             return loadIntegrandExp();
@@ -52,36 +54,52 @@ public class IntegralBuilder {
 
     protected int loadAccuracy() {
         System.out.println("Введите количество случайных точек, определяющее точность.");
-        return ScanValidation.nextInt();
+        this.Accuracy = ScanValidation.nextInt();
+        return Accuracy;
     }
 
     protected void loadLimits() throws UnknownFunctionOrVariableException {
         this.varOrder = loadIntegrateOrder();
         System.out.println("Введите нижнюю границу внешнего предела интегрирования - число ");
-        this.firstMinLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine()).variables().build();
+        stringLimits[0] = ScanValidation.nextNonEmptyLine();
+        this.firstMinLimit = new ExpressionBuilder(stringLimits[0]).variables().build();
         System.out.println("Введите верхнюю границу внешнего предела интегрирования - число ");
-        this.firstMaxLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine()).variables().build();
+        stringLimits[1] = ScanValidation.nextNonEmptyLine();
+        this.firstMaxLimit = new ExpressionBuilder(stringLimits[1]).variables().build();
         System.out.println("Введите нижнюю границу второго предела интегрирования - функция " +
                 varOrder[1] + "(" + varOrder[0] + ")");
-        this.secondMinLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine())
+        stringLimits[2] = ScanValidation.nextNonEmptyLine();
+        this.secondMinLimit = new ExpressionBuilder(stringLimits[2])
                 .variables(String.valueOf(varOrder[0])).build();
         System.out.println("Введите верхнюю границу второго предела интегрирования - функция " +
                 varOrder[1] + "(" + varOrder[0] + ")");
-        this.secondMaxLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine())
+        stringLimits[3] = ScanValidation.nextNonEmptyLine();
+        this.secondMaxLimit = new ExpressionBuilder(stringLimits[3])
                 .variables(String.valueOf(varOrder[0])).build();
         System.out.println("Введите нижнюю границу третьего предела интегрирования - функция " +
                 varOrder[2] + "(" + varOrder[0] + "," + varOrder[1] + ")");
-        this.thirdMinLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine())
+        stringLimits[4] = ScanValidation.nextNonEmptyLine();
+        this.thirdMinLimit = new ExpressionBuilder(stringLimits[4])
                 .variables(String.valueOf(varOrder[0]), String.valueOf(varOrder[1])).build();
         System.out.println("Введите верхнюю границу третьего предела интегрирования - функция " +
                 varOrder[2] + "(" + varOrder[0] + "," + varOrder[1] + ")");
-        this.thirdMaxLimit = new ExpressionBuilder(ScanValidation.nextNonEmptyLine())
+        stringLimits[5] = ScanValidation.nextNonEmptyLine();
+        this.thirdMaxLimit = new ExpressionBuilder(stringLimits[5])
                 .variables(String.valueOf(varOrder[0]), String.valueOf(varOrder[1])).build();
     }
 
     public TripleIntegral build() {
         return new TripleIntegral(loadIntegrandExp(), loadAccuracy(), varOrder, firstMinLimit, firstMaxLimit,
                 secondMinLimit, secondMaxLimit, thirdMinLimit, thirdMaxLimit);
+    }
+
+    @Override
+
+    public String toString() {
+        return "Первый предел: от " + stringLimits[0] + " до " + stringLimits[1] + "\n"
+                + "Второй предел: от " + stringLimits[2] + " до " + stringLimits[3] + "\n"
+                + "Третий предел: от " + stringLimits[4] + " до " + stringLimits[5] + "\n"
+                + "Количество генерируемых точек: " + Accuracy + "\n";
     }
 
 }
